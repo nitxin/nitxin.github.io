@@ -8,7 +8,7 @@
     background: #020824;
 }
 
-{box-sizing: border-box; }
+{ box-sizing : border-box; }
 
 h1,h2,h3{
     margin: 0;
@@ -88,7 +88,7 @@ h2{
 */
 header{
     background: 
-    url(/assests/background.jpg)
+    url(F:\Project\mini\Assets\background.jpg)
     no-repeat center;
     background-size: cover;
     position: relative;   
@@ -113,8 +113,8 @@ header .container{
   button styles
 */
 .btn{
-    padding: 0.7em 2em;
-    border-radius: 0.3em;
+    padding: 0,7em 2em;
+    border-radius: 0,3em;
     text-transform: uppercase;
     transition: 0,3s;
 }
