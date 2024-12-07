@@ -89,7 +89,7 @@ h2{
 */
 header{
     background: 
-    url(Assets/background.jpg)
+    url(/Assets/background.jpg)
     no-repeat center;
     background-size: cover;
     position: relative;   
@@ -519,7 +519,7 @@ h1{
 } 
 
 .grid div {
-    background: url(Assets/grid.gif) fixed;
+    background: url(/Assets/grid.gif) fixed;
     background-size: cover;
     background-position: -15em 100%;
     border-radius: 10px;
@@ -692,7 +692,7 @@ h1{
 /*Trail Section*/
 .trial {
     background:
-     url(Assets/background.jpg) center no-repeat;
+     url(/Assets/background.jpg) center no-repeat;
     background-size: cover;
     padding: 6em 1em;
 }
