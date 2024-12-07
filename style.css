@@ -89,7 +89,7 @@ h2{
 */
 header{
     background: 
-    url(assests/background.jpg)
+    url(Assets/background.jpg)
     no-repeat center;
     background-size: cover;
     position: relative;   
@@ -364,7 +364,7 @@ h1{
 }
 
 /*Adding Light color for all cards*/
-.services .card:nth-child(1) .ligth {
+.services .card:nth-child(1) .light {
      background: #bcb83d;
 }
 
@@ -519,7 +519,7 @@ h1{
 } 
 
 .grid div {
-    background: url(assests/grid.gif) fixed;
+    background: url(Assets/grid.gif) fixed;
     background-size: cover;
     background-position: -15em 100%;
     border-radius: 10px;
@@ -692,7 +692,7 @@ h1{
 /*Trail Section*/
 .trial {
     background:
-    url(assests/background.jpg) center no-repeat;
+     url(Assets/background.jpg) center no-repeat;
     background-size: cover;
     padding: 6em 1em;
 }
