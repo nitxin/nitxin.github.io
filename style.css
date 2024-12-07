@@ -1,3 +1,4 @@
+
 /*
  Reseting default styles,
  styling the typography
@@ -624,7 +625,7 @@ h1{
 /*Trail Section*/
 .trial {
     background:
-    url(img/background.jpg)
+    url(assests/background.jpg)
     center no-repeat;
     background-size: cover;
     padding: 6em 1em;
