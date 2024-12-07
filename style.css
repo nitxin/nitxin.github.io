@@ -88,7 +88,7 @@ h2{
 */
 header{
     background: 
-    url(F:\Project\mini\Assets\background.jpg)
+    url(/assests/background.jpg)
     no-repeat center;
     background-size: cover;
     position: relative;   
