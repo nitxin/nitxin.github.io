@@ -638,40 +638,81 @@ h1{
 
 /*Footer Section*/
 footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2em;
+    background-color: #1b2039;       /* Dark background color */
+    color: #ccc;                    /* Light text color */
+    padding: 2em 1em;               /* Add padding for spacing */
 }
 
-footer li {
-    margin: 1em 0;
+footer .container {
+    display: flex;                  /* Activate flexbox for layout */
+    justify-content: space-between; /* Space items evenly horizontally */
+    flex-wrap: wrap;                /* Allow wrapping for responsiveness */
+    gap: 2em;                       /* Add space between sections */
+    max-width: 1200px;              /* Center and limit width */
+    margin: 0 auto;                 /* Center container horizontally */
 }
 
-footer li a {
-    color: #ccc;
-}
-
-footer li a:hover {
-    text-decoration: underline;
-}
-
-footer input {
-    background: #1b2039;
-    border: none;
-    padding: 0.7em;
-    border-radius: 5px;
-}
-
-footer hr {
-    border: 1px #1b2039 solid;
-    margin: 1.5em 0;
+footer h2, footer h3 {
+    color: #fff;                    /* Headings use brighter text */
+    margin-bottom: 0.5em;
 }
 
 footer p {
     margin: 1em 0;
 }
+
+footer ul {
+    list-style: none;               /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+footer li {
+    margin: 0.5em 0;
+}
+
+footer li a {
+    color: #ccc;                    /* Links use light gray color */
+    text-decoration: none;          /* Remove underline */
+}
+
+footer li a:hover {
+    text-decoration: underline;     /* Add underline on hover */
+}
+
+footer form {
+    margin-top: 1em;
+}
+
+footer input {
+    background: #fff;               /* Light background for contrast */
+    border: none;
+    padding: 0.7em;
+    border-radius: 5px;
+    margin-right: 0.5em;
+    width: calc(100% - 80px);       /* Flexible input width */
+    max-width: 300px;               /* Limit input width on large screens */
+    box-sizing: border-box;
+}
+
+footer button {
+    background: #007bff;            /* Blue button color */
+    border: none;
+    color: #fff;
+    padding: 0.7em 1.5em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+footer button:hover {
+    background: #0056b3;            /* Darker blue on hover */
+}
+
+footer hr {
+    border: 1px solid #3a3f5c;      /* Subtle horizontal line */
+    margin: 1.5em 0;
+}
+
 
 @media screen and (max-width: 100px) {
     .menu-btn {
