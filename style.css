@@ -88,7 +88,7 @@ h2{
 */
 header{
     background: 
-    url(F:\Project\mini\Assets\background.jpg)
+    url(/assests/background.jpg)
     no-repeat center;
     background-size: cover;
     position: relative;   
@@ -451,7 +451,7 @@ h1{
 } 
 
 .grid div {
-    background: url(img/grid.gif) fixed;
+    background: url(assest/grid.gif) fixed;
     background-size: cover;
     background-position: -15em 100%;
     border-radius: 10px;
