@@ -638,7 +638,7 @@ h1 {
     border-color: #b14d44;
 }
 .artists .card:nth-child(4) .profile-img {
-    border-color: #472847; 
+    border-color: rgb(17, 68, 96); 
 }
 .artists .card:nth-child(4) .card-btn{
     border-color: #472847;
