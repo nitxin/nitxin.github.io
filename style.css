@@ -109,6 +109,12 @@ header .container{
     flex-direction: column;
     min-height: 100vh;
 }
+
+/*
+  Creating the primary and secondary
+  button styles
+*/
+
 #btn-login {
     background: transparent;
     color: #fff;
@@ -119,10 +125,7 @@ header .container{
 #btn-login:hover {
     background: #1de7ea;
 }
-/*
-  Creating the primary and secondary
-  button styles
-*/
+
 .btn {
     margin-right: 69px;
     padding: 0.8em 3em;
@@ -137,7 +140,6 @@ header .container{
     );
     color: #111;
     border: none;
-    word-spacing: 1px;
 }
 
 .btn-primary:hover {
@@ -147,7 +149,6 @@ header .container{
 .btn-secondary {
     border: 1px #1de7ea solid;
     color: #fff;
-    word-spacing: 2px;
 }
 
 .btn-secondary:hover {
@@ -169,7 +170,7 @@ nav {
 }
 
 nav a {
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .brand {
@@ -583,7 +584,7 @@ h1 {
 
 .card-btn {
     background: none;
-    border: 11px #284b60 solid;
+    border: 1px #284b60 solid;
     width: 100%;
     padding: 1em 0;
     border-radius: 10px;
