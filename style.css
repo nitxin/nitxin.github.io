@@ -633,12 +633,12 @@ h1 {
 .artist .card:nth-child(4) {
     background: radial-gradient(
         rgb(17, 68, 96),
-        rgb(17, 68, 96, 0.5)
+        rgba(17, 68, 96, 0.5)
     );
     border-color: #b14d44;
 }
 .artists .card:nth-child(4) .profile-img {
-    border-color: rgb(17, 68, 96); 
+    border-color: #472847; 
 }
 .artists .card:nth-child(4) .card-btn{
     border-color: #472847;
