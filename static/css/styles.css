@@ -1,0 +1,83 @@
+/* General Styles */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.container {
+  margin-top: 60px;
+}
+
+/* Table Styles */
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table thead {
+  background-color: #343a40;
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-success {
+  background-color: #198754;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #157347;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
+}
+
+/* Alerts */
+.alert {
+  font-size: 1rem;
+}
+
+/* Checkbox alignment */
+input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+/* Utility */
+.fw-bold {
+  font-weight: bold;
+}
+
+.text-success {
+  color: #198754 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}

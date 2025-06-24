@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - No Due Certificate System</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary-bg: linear-gradient(135deg, #4a1c1c 0%, #2a0c0c 100%);
+      --secondary-color: #d4af37;
+      --text-light: #f5e9e0;
+      --text-lighter: rgba(245, 233, 224, 0.8);
+      --glass-bg: rgba(74, 28, 28, 0.3);  /* Matching background color */
+      --glass-border: rgba(212, 175, 55, 0.2);  /* Subtle gold border */
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bg-pattern, .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .bg-pattern {
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg, #4a1c1c 0%, #2a0c0c 100%);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 2.5rem;
+      text-align: center;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 16px;
+      background: linear-gradient(
+        135deg, 
+        rgba(212, 175, 55, 0.1) 0%, 
+        rgba(212, 175, 55, 0) 100%
+      );
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .logo {
+      max-width: 180px;
+      margin: 0 auto 2rem;
+      display: block;
+      filter: drop-shadow(0 0 0 rgba(212, 175, 55, 0));
+      transition: filter 0.3s ease-in-out;
+    }
+
+    .logo:hover {
+      filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.6));
+    }
+
+    .form-label {
+      color: var(--text-lighter);
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control, .input-group-text {
+      background-color: rgba(42, 12, 12, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      color: var(--text-light);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control {
+      padding: 0.75rem 1rem;
+    }
+
+    .form-control::placeholder {
+      color: rgba(201, 184, 163, 0.6);
+    }
+
+    .form-control:focus {
+      background-color: rgba(42, 12, 12, 0.7);
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+    }
+
+    .btn-primary {
+      background-color: var(--secondary-color);
+      color: #2a0c0c;
+      font-weight: 500;
+      border-radius: 8px;
+      border: none;
+      padding: 0.75rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary:hover {
+      background-color: #c9a22e;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(183, 147, 47, 0.4);
+    }
+
+    a.text-primary {
+      color: var(--secondary-color) !important;
+      text-decoration: none;
+      font-weight: 400;
+      position: relative;
+    }
+
+    a.text-primary::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--secondary-color);
+      transition: width 0.3s ease;
+    }
+
+    a.text-primary:hover::after {
+      width: 100%;
+    }
+
+    .alert {
+      background-color: rgba(42, 12, 12, 0.9);
+      color: var(--text-light);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: left;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(212, 175, 55, 0.6);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+    }
+
+    @media (max-width: 576px) {
+      .login-container {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="login-container">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="GM University Logo" class="logo" />
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+      {{ csrf_token()|safe }}
+      <div class="mb-3 text-start">
+        <label for="username" class="form-label">Username</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+          <input type="text" class="form-control" id="username" name="username" required autofocus placeholder="Enter your username" />
+        </div>
+      </div>
+
+      <div class="mb-4 text-start">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+          <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mb-3">
+        <span class="me-2">Login</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <div class="text-center mt-3">
+        <a href="{{ url_for('forgot_password') }}" class="text-primary">
+          Forgot your password?
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Create particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = window.innerWidth < 768 ? 15 : 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const size = Math.random() * 8 + 2;
+        const posX = Math.random() * window.innerWidth;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 20 + 10;
+        
+        Object.assign(particle.style, {
+          width: `${size}px`,
+          height: `${size}px`,
+          left: `${posX}px`,
+          bottom: `-${size}px`,
+          animationDelay: `${delay}s`,
+          animationDuration: `${duration}s`,
+          opacity: Math.random() * 0.6 + 0.2
+        });
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Auto-dismiss alert
+    window.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      
+      document.querySelectorAll('.alert').forEach(alert => {
+        setTimeout(() => {
+          bootstrap.Alert.getOrCreateInstance(alert).close();
+        }, 3000);
+      });
+    });
+  </script>
+</body>
+</html>
