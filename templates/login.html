@@ -16,8 +16,8 @@
       --secondary-color: #d4af37;
       --text-light: #f5e9e0;
       --text-lighter: rgba(245, 233, 224, 0.8);
-      --glass-bg: rgba(74, 28, 28, 0.3);  /* Matching background color */
-      --glass-border: rgba(212, 175, 55, 0.2);  /* Subtle gold border */
+      --glass-bg: rgba(74, 28, 28, 0.3);
+      --glass-border: rgba(212, 175, 55, 0.2);
       --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
@@ -72,11 +72,7 @@
       right: 0;
       bottom: 0;
       border-radius: 16px;
-      background: linear-gradient(
-        135deg, 
-        rgba(212, 175, 55, 0.1) 0%, 
-        rgba(212, 175, 55, 0) 100%
-      );
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0) 100%);
       z-index: -1;
       pointer-events: none;
     }
@@ -101,7 +97,9 @@
       letter-spacing: 0.5px;
     }
 
-    .form-control, .input-group-text {
+    .form-control,
+    .form-control:focus,
+    .input-group-text {
       background-color: rgba(42, 12, 12, 0.5);
       border: 1px solid rgba(212, 175, 55, 0.2);
       color: var(--text-light);
@@ -111,6 +109,7 @@
 
     .form-control {
       padding: 0.75rem 1rem;
+      caret-color: var(--text-light);
     }
 
     .form-control::placeholder {

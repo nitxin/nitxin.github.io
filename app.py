@@ -213,21 +213,24 @@ def faculty_dashboard():
         flash("Please log in as faculty.", "warning")
         return redirect(url_for('login'))
 
-    faculty_id = session['faculty_id']
+    faculty_id = int(session['faculty_id'])
     conn = get_db_connection()
     faculty = conn.execute('SELECT * FROM faculty WHERE id = ?', (faculty_id,)).fetchone()
 
     if request.method == 'POST':
         cleared_ids = request.form.getlist('cleared_ids')
-        all_student_ids = request.form.getlist('all_student_ids')  # updated line
+        all_student_ids = request.form.getlist('all_student_ids')
+
+        today = datetime.now().strftime('%d-%m-%Y')
 
         for sid in all_student_ids:
-            if sid in cleared_ids:
+            sid = int(sid)  # ensure it's an integer
+            if str(sid) in cleared_ids:
                 conn.execute('''
                     UPDATE student_clearance
                     SET cleared = 1, due_amount = 0, approval_date = ?
                     WHERE student_id = ? AND faculty_id = ?
-                ''', (datetime.now().strftime('%Y-%m-%d'), sid, faculty_id))
+                ''', (today, sid, faculty_id))
             else:
                 conn.execute('''
                     UPDATE student_clearance
@@ -238,11 +241,14 @@ def faculty_dashboard():
         conn.commit()
 
         for sid in cleared_ids:
-            check_and_update_clearance_status(sid)
+            check_and_update_clearance_status(int(sid))
 
         conn.close()
         flash("Clearance status updated.", "success")
         return redirect(url_for('faculty_dashboard'))
+
+    # GET method continues unchanged...
+
 
     filter_type = request.args.get('filter_type', '').lower()
     selected_department = request.args.get('department', None)
@@ -347,14 +353,20 @@ def draw_paragraph(p, text, x, y, width):
     para.drawOn(p, x, y - h)
     return y - h
 
+from datetime import datetime
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib import colors
+
 def draw_table(p, approvals, y_start):
-    data = [['Department', 'Status']]
+    data = [['Department', 'Status', 'Date']]
+
     for approval in approvals:
         department = approval.get('department') or approval.get('role') or 'Unknown'
         status = approval.get('status', '-')
-        data.append([department, status])
+        date = approval.get('date') or datetime.now().strftime("%d-%m-%Y")
+        data.append([department, status, date])
 
-    table = Table(data, colWidths=[250, 200])
+    table = Table(data, colWidths=[200, 150, 100])
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
@@ -369,6 +381,7 @@ def draw_table(p, approvals, y_start):
     w, h = table.wrapOn(p, 0, 0)
     table.drawOn(p, 50, y_start - h)
     return y_start - h
+
 
 def generate_certificate_pdf(student, approvals):
     buffer = BytesIO()
@@ -528,26 +541,39 @@ def generate_pdf(student_id):
         return redirect(url_for('student_dashboard'))
 
     conn = get_db_connection()
+
+    # Fetch student
     student = conn.execute('SELECT * FROM student WHERE id = ?', (student_id,)).fetchone()
+    if not student:
+        conn.close()
+        flash("Student not found.", "danger")
+        return redirect(url_for('student_dashboard'))
+
+    # Fetch clearances
     clearances_raw = conn.execute('''
-        SELECT sc.*, f.role as role
+        SELECT sc.cleared, sc.approval_date, f.role 
         FROM student_clearance sc
         LEFT JOIN faculty f ON sc.faculty_id = f.id
         WHERE sc.student_id = ?
     ''', (student_id,)).fetchall()
     conn.close()
 
-    if not student:
-        flash("Student not found.", "danger")
-        return redirect(url_for('student_dashboard'))
-
-    # ✅ Convert sqlite3.Row to plain dict with necessary fields
+    # Construct isolated approvals list
     approvals = []
     for row in clearances_raw:
+        if row['cleared']:  # Only set date if cleared is True
+            try:
+                parsed_date = datetime.strptime(row['approval_date'], "%d-%m-%Y")
+                approval_date = parsed_date.strftime("%d-%m-%Y")
+            except (ValueError, TypeError):
+                approval_date = '-'  # fallback if date is malformed or None
+        else:
+            approval_date = '-'
+
         approvals.append({
             'department': row['role'] or 'Unknown',
             'status': "Approved" if row['cleared'] else "Not Approved",
-            'approval_date': row['approval_date']
+            'date': approval_date
         })
 
     pdf_buffer = generate_certificate_pdf(student, approvals)
@@ -558,6 +584,47 @@ def generate_pdf(student_id):
         as_attachment=True,
         download_name=f"{student['roll_number']}_no_due_certificate.pdf"
     )
+
+@app.route('/approve_clearance/<int:student_id>/<int:faculty_id>', methods=['POST'])
+def approve_clearance(student_id, faculty_id):
+    if session.get('role') != 'faculty':
+        flash("Unauthorized access", "danger")
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+
+    # Check if already approved with a date
+    existing = conn.execute('''
+        SELECT cleared, approval_date 
+        FROM student_clearance 
+        WHERE student_id = ? AND faculty_id = ?
+    ''', (student_id, faculty_id)).fetchone()
+
+    if existing and existing['cleared'] and existing['approval_date']:
+        # Already approved — do not change the approval_date
+        conn.execute('''
+            UPDATE student_clearance
+            SET due_amount = 0
+            WHERE student_id = ? AND faculty_id = ?
+        ''', (student_id, faculty_id))
+    else:
+        # First-time approval or no valid date — set current date
+        today = datetime.now().strftime("%d-%m-%Y")
+        conn.execute('''
+            UPDATE student_clearance
+            SET cleared = 1,
+                due_amount = 0,
+                approval_date = ?
+            WHERE student_id = ? AND faculty_id = ?
+        ''', (today, student_id, faculty_id))
+
+    conn.commit()
+    conn.close()
+    flash("Clearance approved successfully.", "success")
+    return redirect(url_for('faculty_dashboard'))
+
+
+
 
 
 @app.route('/logout', methods=['POST'])

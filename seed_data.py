@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from datetime import datetime
 from werkzeug.security import generate_password_hash
 
 # Ensure the 'data' directory exists
@@ -92,34 +93,49 @@ charlie_id = cursor.fetchone()[0]
 cursor.execute("SELECT id, role FROM faculty")
 faculties = cursor.fetchall()
 
-# Insert sample clearance data for students
-# Alice: one due
-# Bob: all cleared
-# Charlie: multiple dues
+# Current date for approved entries
+today = datetime.now().strftime("%d-%m-%Y")
 
+# Insert sample clearance data for students
 for faculty_id, role in faculties:
-    # Alice
-    due_amount = 100 if role == 'Fee department' else 0
+    # --- Alice ---
+    if role == 'Fee department':
+        # Alice has fee due
+        cursor.execute(
+            '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount)
+               VALUES (?, ?, ?, ?)''',
+            (alice_id, faculty_id, 0, 100)
+        )
+    else:
+        cursor.execute(
+            '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount, approval_date)
+               VALUES (?, ?, ?, ?, ?)''',
+            (alice_id, faculty_id, 1, 0, today)
+        )
+
+    # --- Bob: all cleared ---
     cursor.execute(
-        '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount)
-           VALUES (?, ?, ?, ?)''',
-        (alice_id, faculty_id, 0 if due_amount > 0 else 1, due_amount)
+        '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount, approval_date)
+           VALUES (?, ?, ?, ?, ?)''',
+        (bob_id, faculty_id, 1, 0, today)
     )
-    # Bob - cleared
-    cursor.execute(
-        '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount)
-           VALUES (?, ?, ?, ?)''',
-        (bob_id, faculty_id, 1, 0)
-    )
-    # Charlie - multiple dues
-    due = 150 if role in ['library', 'Transport department'] else 0
-    cursor.execute(
-        '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount)
-           VALUES (?, ?, ?, ?)''',
-        (charlie_id, faculty_id, 0 if due > 0 else 1, due)
-    )
+
+    # --- Charlie: multiple dues ---
+    if role in ['library', 'Transport department']:
+        cursor.execute(
+            '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount)
+               VALUES (?, ?, ?, ?)''',
+            (charlie_id, faculty_id, 0, 150)
+        )
+    else:
+        cursor.execute(
+            '''INSERT INTO student_clearance (student_id, faculty_id, cleared, due_amount, approval_date)
+               VALUES (?, ?, ?, ?, ?)''',
+            (charlie_id, faculty_id, 1, 0, today)
+        )
+
 
 conn.commit()
 conn.close()
 
-print("✅ Database seeded with faculty, students, and clearance records including dues.")
+print("✅ Database seeded with faculty, students, and clearance records including approval dates.")
